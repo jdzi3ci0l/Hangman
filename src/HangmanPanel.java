@@ -66,4 +66,38 @@ public class HangmanPanel extends JPanel {
     public static void victory() {
         jLabel.setIcon(new ImageIcon("images\\victoryDance.gif"));
     }
+
+    public static void reset(){
+        gameOver = false;
+        mistakesCount = 0;
+        jLabel.setIcon(null);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < Main.getWord().length(); i++) {
+            sb.append(Main.getWord().charAt(i) == ' ' ? ' ' : '*');
+        }
+        wordWithHiddenLetters = sb.toString();
+        jLabel.setText(wordWithHiddenLetters);
+    }
+
+    public static void resetSetup(){
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Would you like to start again ?", "Hangman", dialogButton);
+        if(dialogResult == 0){
+            dialogButton = JOptionPane.YES_NO_OPTION;
+            dialogResult = JOptionPane.showConfirmDialog(null, "Would you like to pick a random word?", "Hangman", dialogButton);
+            if(dialogResult == 0){
+                Main.setWord(Main.getRandomWord());
+            }
+            else{
+                JPasswordField wordField = new JPasswordField();
+                int okOrCancel = JOptionPane.showConfirmDialog(null, wordField, "Word", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                if (okOrCancel == JOptionPane.OK_OPTION) {
+                    Main.setWord(String.valueOf(wordField.getPassword()).trim().toUpperCase());
+                }
+            }
+            GuessPanel.reset();
+            reset();
+            System.err.println("Your word: " + Main.getWord());
+        }
+    }
 }
