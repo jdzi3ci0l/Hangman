@@ -37,19 +37,29 @@ public class GuessPanel extends JPanel implements ActionListener {
             if (Main.getWord().contains(pressedButton.getText())) {
                 replaceAsterisks(pressedButton.getText().charAt(0));
                 pressedButton.setBackground(Color.GREEN);
+                pressedButton.setEnabled(false);
                 if (HangmanPanel.getWordWithHiddenLetters().equals(Main.getWord())) {
                     HangmanPanel.setGameOver(true);
                     HangmanPanel.victory();
+                    HangmanPanel.resetSetup();
                 }
             } else {
                 pressedButton.setBackground(Color.RED);
+                pressedButton.setEnabled(false);
                 HangmanPanel.increaseMistakesCount();
                 if (HangmanPanel.getMistakesCount() == 8) {
                     HangmanPanel.setWordWithHiddenLetters(Main.getWord());
                     HangmanPanel.setGameOver(true);
+                    HangmanPanel.resetSetup();
                 }
             }
-            pressedButton.setEnabled(false);
+        }
+    }
+
+    public static void reset() {
+        for (int i = 0; i < letters.length; i++) {
+            letters[i].setEnabled(true);
+            letters[i].setBackground(new JButton().getBackground());
         }
     }
 }
